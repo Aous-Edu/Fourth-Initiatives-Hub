@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الملف الرسمي لتوثيق المبادرة النوعية | الثانوية الرابعة بالجبيل</title>
+  
+  <!-- خط القاهرة الرسمي -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#15445A',     // الأزرق الداكن الرسمي
+              teal: '#0DA9A6',     // التركواز التفاعلي
+              green: '#07A869',    // أخضر الاعتماد والنجاح
+              blue: '#3D7EB9',     // أزرق المتابعة
+              gold: '#C1B48A',     // الذهبي للتميز
+              lightgray: '#C2C1C1' // الرمادي الفاتح
+            }
+          },
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: white !important;
+        color: black !important;
+        padding: 0 !important;
+      }
+      .print-border {
+        border-color: #000 !important;
+      }
+      .page-break {
+        page-break-before: always;
+      }
+    }
+  </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-800 antialiased min-h-screen p-4 sm:p-8">
+
+  <!-- شريط التحكم العلوي (أزرار التنقل والطباعة) -->
+  <div class="max-w-4xl mx-auto mb-6 flex flex-wrap justify-between items-center gap-4 no-print">
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="px-4 py-2 bg-white border border-slate-300 hover:border-brand-teal text-slate-700 font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-2">
+        <i class="fa-solid fa-arrow-right"></i>
+        <span>العودة لبوابة المعلمة</span>
+      </a>
+      <a href="admin.html" class="px-4 py-2 bg-white border border-slate-300 hover:border-brand-dark text-slate-700 font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-2">
+        <i class="fa-solid fa-shield-halved text-brand-dark"></i>
+        <span>لوحة الإدارة</span>
+      </a>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button onclick="window.print()" class="px-6 py-2.5 bg-brand-dark hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center gap-2">
+        <i class="fa-solid fa-print text-brand-gold"></i>
+        <span>طباعة الملف الرسمي / تصدير PDF</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- وثيقة الملف الرسمي المعتمد -->
+  <div class="max-w-4xl mx-auto bg-white border-2 border-slate-300 rounded-2xl shadow-xl p-8 sm:p-12 space-y-8 print-border">
+    
+    <!-- الترويسة الوزارية الرسمية -->
+    <header class="border-b-2 border-brand-dark pb-6">
+      <div class="flex flex-col sm:flex-row justify-between items-center text-center sm:text-right gap-4">
+        
+        <div class="space-y-1 text-xs font-bold text-brand-dark">
+          <div>المملكة العربية السعودية</div>
+          <div>وزارة التعليم</div>
+          <div>الإدارة العامة للتعليم بالمنطقة الشرقية</div>
+          <div>الثانوية الرابعة بالجبيل (بنات)</div>
+        </div>
+
+        <!-- الشعار الرسمي والختم الهيكلي -->
+        <div class="text-center">
+          <img src="logo.png" alt="شعار الثانوية الرابعة بالجبيل" class="h-20 w-auto object-contain mx-auto mb-1">
+          <div class="text-xs font-black text-brand-dark">حاضنة المبادرات النوعية</div>
+          <div class="text-[10px] text-slate-500 font-bold tracking-wider">سجل التوثيق والاعتماد التربوي</div>
+        </div>
+
+        <div class="space-y-1 text-xs text-slate-600 sm:text-left text-center">
+          <div><strong>كود المبادرة:</strong> <span id="docCode" class="font-mono text-brand-dark font-bold">INIT-101</span></div>
+          <div><strong>تاريخ الاعتماد:</strong> <span id="docDate" class="font-semibold">2026-10-24</span></div>
+          <div><strong>العام الدراسي:</strong> <span class="font-semibold">1447 / 1448 هـ</span></div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- بطاقة عنوان المبادرة والحالة -->
+    <section class="bg-slate-50 p-6 rounded-2xl border border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <span id="docCategory" class="px-3 py-1 rounded-full text-xs font-bold bg-brand-teal/15 text-brand-teal border border-brand-teal/30"></span>
+          <span id="docFeatured" class="hidden px-2.5 py-0.5 rounded-full text-xs font-bold bg-brand-gold/30 text-[#826a31] border border-brand-gold/50">⭐ مبادرة متميزة</span>
+        </div>
+        <h1 id="docTitle" class="text-xl sm:text-2xl font-black text-brand-dark"></h1>
+        <p class="text-xs text-slate-500 mt-1">المعلمة صاحبة المبادرة: <strong id="docTeacher" class="text-brand-dark text-sm"></strong></p>
+      </div>
+
+      <div id="docStatusBadge" class="px-4 py-2 rounded-xl text-xs font-black border text-center shadow-sm">
+        <!-- شارة الحالة -->
+      </div>
+    </section>
+
+    <!-- جدول البيانات والخط الزمني -->
+    <section class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+        <span class="text-slate-400 block mb-1">الفئة المستهدفة:</span>
+        <strong id="docTarget" class="text-slate-700"></strong>
+      </div>
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+        <span class="text-slate-400 block mb-1">المستفيدون المقدرون:</span>
+        <strong id="docBeneficiaries" class="text-brand-teal font-black text-sm"></strong>
+      </div>
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+        <span class="text-slate-400 block mb-1">تاريخ البدء:</span>
+        <strong id="docStartDate" class="text-slate-700"></strong>
+      </div>
+      <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+        <span class="text-slate-400 block mb-1">تاريخ الانتهاء:</span>
+        <strong id="docEndDate" class="text-slate-700"></strong>
+      </div>
+    </section>
+
+    <!-- المشكلة والأهداف -->
+    <section class="space-y-4 text-xs">
+      <div class="p-4 rounded-xl border border-slate-200 bg-white">
+        <h3 class="font-bold text-sm text-brand-dark mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-circle-exclamation text-brand-blue"></i>
+          <span>1. الاحتياج والمشكلة الواقعية المعالجة:</span>
+        </h3>
+        <p id="docProblem" class="text-slate-700 leading-relaxed"></p>
+      </div>
+
+      <div class="p-4 rounded-xl border border-slate-200 bg-white">
+        <h3 class="font-bold text-sm text-brand-dark mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-bullseye text-brand-teal"></i>
+          <span>2. الهدف العام ومؤشر الأثر:</span>
+        </h3>
+        <p id="docGoal" class="text-slate-800 font-bold leading-relaxed mb-2"></p>
+        <div class="p-2.5 bg-teal-50/50 rounded-lg border border-brand-teal/20 text-brand-dark font-medium">
+          <strong>المؤشر الكمي لقياس الأثر:</strong> <span id="docMetric"></span>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl border border-slate-200 bg-white">
+        <h3 class="font-bold text-sm text-brand-dark mb-2 flex items-center gap-2">
+          <i class="fa-solid fa-list-check text-brand-dark"></i>
+          <span>3. خطة العمل والمراحل التنفيذية:</span>
+        </h3>
+        <p id="docPlan" class="text-slate-700 whitespace-pre-line leading-relaxed"></p>
+      </div>
+    </section>
+
+    <!-- شريط نسبة الإنجاز وقياس الأثر -->
+    <section class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+      <div class="flex justify-between items-center">
+        <span class="font-bold text-brand-dark">نسبة الإنجاز المحققة والموثقة:</span>
+        <span id="docProgressText" class="font-black text-brand-green text-sm"></span>
+      </div>
+      <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+        <div id="docProgressBar" class="h-full bg-brand-green rounded-full transition-all duration-500"></div>
+      </div>
+    </section>
+
+    <!-- توجيهات وملاحظات المشرفة التربوية والاعتماد -->
+    <section class="p-5 bg-amber-50/40 rounded-xl border-2 border-brand-gold/40 text-xs space-y-2">
+      <div class="flex items-center gap-2 font-bold text-amber-900 text-sm">
+        <i class="fa-solid fa-comment-dots text-brand-gold"></i>
+        <span>قرار وتوجيهات المشرفة / الإدارة التربوية:</span>
+      </div>
+      <p id="docSupervisorNotes" class="text-slate-700 leading-relaxed pr-5 font-medium"></p>
+      
+      <div id="docEvidenceBox" class="pt-3 border-t border-amber-200/60 flex items-center justify-between">
+        <span class="text-slate-600 font-semibold">ملف الشواهد والأدلة الرقمية:</span>
+        <a id="docEvidenceLink" href="#" target="_blank" class="px-3 py-1 bg-brand-dark text-white rounded-lg font-bold text-[11px] no-print">
+          معاينة الشواهد المرفوعة ←
+        </a>
+        <span id="docEvidencePrintUrl" class="text-[10px] text-slate-500 font-mono hidden print:inline"></span>
+      </div>
+    </section>
+
+    <!-- التوقيعات الرسمية والأختام (معتمدة لمكتب التعليم) -->
+    <footer class="pt-8 border-t-2 border-slate-200 mt-12">
+      <div class="grid grid-cols-3 gap-6 text-center text-xs">
+        
+        <div class="space-y-6">
+          <div class="font-bold text-slate-700">معلمة المبادرة</div>
+          <div id="docSignTeacher" class="font-bold text-brand-dark pt-8 border-b border-dashed border-slate-400"></div>
+          <div class="text-[10px] text-slate-400">التوقيع والتاريخ</div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="font-bold text-slate-700">المشرفة التربوية المنسقة</div>
+          <div class="font-bold text-brand-dark pt-8 border-b border-dashed border-slate-400">أ. نوال العتيبي</div>
+          <div class="text-[10px] text-slate-400">التوقيع والتاريخ</div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="font-bold text-slate-700">مديرة المدرسة (الاعتماد الرسمي)</div>
+          <div class="font-bold text-brand-dark pt-8 border-b border-dashed border-slate-400">أ. فريدة بنت سعود العتيبي</div>
+          <div class="text-[10px] text-slate-400">التوقيع وختم المدرسة الرسمي</div>
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'moe_school4_initiatives';
+
+    function getInitiatives() {
+      const data = localStorage.getItem(STORAGE_KEY);
+      if (!data) return [];
+      try {
+        const parsed = JSON.parse(data);
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    // دالة تعقيم النصوص للوقاية التامة من XSS
+    function escapeHtml(str) {
+      if (!str && str !== 0) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function loadInitiativeDocument() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const initId = urlParams.get('id');
+      const all = getInitiatives();
+
+      let item = null;
+      if (initId) {
+        item = all.find(i => i.id === initId);
+      }
+      if (!item && all.length > 0) {
+        item = all[0];
+      }
+
+      if (!item) {
+        alert('لم يتم العثور على المبادرة المحددة.');
+        window.location.href = 'index.html';
+        return;
+      }
+
+      // تعبئة البيانات بأمان تام
+      document.getElementById('docCode').textContent = escapeHtml(item.id);
+      document.getElementById('docDate').textContent = escapeHtml(item.createdAt || '2026-10-24');
+      document.getElementById('docCategory').textContent = escapeHtml(item.category);
+      document.getElementById('docTitle').textContent = escapeHtml(item.title);
+      document.getElementById('docTeacher').textContent = escapeHtml(item.teacherName) + (item.teacherUsername ? ' (@' + escapeHtml(item.teacherUsername) + ')' : '');
+      document.getElementById('docSignTeacher').textContent = escapeHtml(item.teacherName);
+      document.getElementById('docTarget').textContent = escapeHtml(item.target);
+      document.getElementById('docBeneficiaries').textContent = escapeHtml(item.beneficiaries || 0) + ' مستفيد';
+      document.getElementById('docStartDate').textContent = escapeHtml(item.startDate || '-');
+      document.getElementById('docEndDate').textContent = escapeHtml(item.endDate || '-');
+      document.getElementById('docProblem').textContent = escapeHtml(item.problem || 'لم تدرج تفاصيل إضافية');
+      document.getElementById('docGoal').textContent = escapeHtml(item.goal);
+      document.getElementById('docMetric').textContent = escapeHtml(item.metric || 'مؤشر أثر نوعي معتمد');
+      document.getElementById('docPlan').textContent = escapeHtml(item.plan || 'الخطة قيد التحديث');
+      document.getElementById('docProgressText').textContent = escapeHtml(item.progress || 0) + '%';
+      document.getElementById('docProgressBar').style.width = (item.progress || 0) + '%';
+      document.getElementById('docSupervisorNotes').textContent = escapeHtml(item.supervisorNotes || 'المبادرة مستوفية للشروط المبدئية ومسجلة في المنظومة.');
+
+      if (item.isFeatured || item.status === 'متميزة') {
+        document.getElementById('docFeatured').classList.remove('hidden');
+      }
+
+      // الشارة
+      const statusBadge = document.getElementById('docStatusBadge');
+      if (item.status === 'قيد المراجعة') {
+        statusBadge.className = 'px-4 py-2 rounded-xl text-xs font-black border bg-[#3D7EB9]/10 text-brand-blue border-brand-blue/30';
+        statusBadge.textContent = 'قيد المراجعة والتدقيق';
+      } else if (item.status === 'قيد التنفيذ') {
+        statusBadge.className = 'px-4 py-2 rounded-xl text-xs font-black border bg-[#0DA9A6]/10 text-brand-teal border-brand-teal/30';
+        statusBadge.textContent = 'معتمدة • قيد التنفيذ';
+      } else if (item.status === 'مكتملة') {
+        statusBadge.className = 'px-4 py-2 rounded-xl text-xs font-black border bg-[#07A869]/10 text-brand-green border-brand-green/30';
+        statusBadge.textContent = 'معتمدة • مكتملة ومحققة للأثر';
+      } else if (item.status === 'تحتاج تعديل') {
+        statusBadge.className = 'px-4 py-2 rounded-xl text-xs font-black border bg-amber-100 text-amber-800 border-amber-300';
+        statusBadge.textContent = 'تحتاج تعديل واستكمال شواهد';
+      } else {
+        statusBadge.className = 'px-4 py-2 rounded-xl text-xs font-black border bg-slate-100 text-slate-700 border-slate-300';
+        statusBadge.textContent = 'مسودة مبادرة';
+      }
+
+      // الشواهد
+      const evidenceLink = document.getElementById('docEvidenceLink');
+      const evidencePrintUrl = document.getElementById('docEvidencePrintUrl');
+      if (item.evidenceLink) {
+        evidenceLink.href = item.evidenceLink;
+        evidencePrintUrl.textContent = item.evidenceLink;
+      } else {
+        document.getElementById('docEvidenceBox').classList.add('hidden');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadInitiativeDocument);
+  </script>
+
+</body>
+</html>

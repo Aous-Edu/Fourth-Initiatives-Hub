@@ -1,0 +1,100 @@
+{
+  "school": "الثانوية الرابعة بالجبيل",
+  "principal": "أ. فريدة بنت سعود العتيبي",
+  "version": "2.1.0",
+  "updatedAt": "2026-10-25T11:30:00Z",
+  "teachers": [
+    {
+      "id": "T-101",
+      "name": "أ. سارة راشد الحربي",
+      "username": "sara_h",
+      "specialty": "حاسب آلي وتقنية",
+      "salt": "salt_sara_h_2026",
+      "passwordHash": "621cfbdf6d8eb743bd3403ad58853e5e4e21e15250e44718551d22d877dd329b"
+    },
+    {
+      "id": "T-102",
+      "name": "أ. نورة سعد الخالدي",
+      "username": "noura_k",
+      "specialty": "علوم وأحياء وبيئة",
+      "salt": "salt_noura_k_2026",
+      "passwordHash": "b78158dff13262efde711cc53c3668e067ff2d7a514f7327f9fe7cdb8a0c1d86"
+    },
+    {
+      "id": "T-103",
+      "name": "أ. منى فهد الدوسري",
+      "username": "mona_d",
+      "specialty": "توجيه وإرشاد طلابي",
+      "salt": "salt_mona_d_2026",
+      "passwordHash": "d3ecacabe71a67187e2c0f442c0efa896a050f5cf77129bd633287fc23826c7c"
+    }
+  ],
+  "initiatives": [
+    {
+      "id": "INIT-101",
+      "title": "المعمل الافتراضي لمادة الحاسب والذكاء الاصطناعي",
+      "teacherName": "أ. سارة راشد الحربي",
+      "teacherUsername": "sara_h",
+      "category": "تقني وذكاء اصطناعي",
+      "target": "طالبات الصف الأول والثاني الثانوي",
+      "beneficiaries": 85,
+      "startDate": "2026-10-01",
+      "endDate": "2026-12-15",
+      "problem": "الحاجة لتوسيع مهارات الطالبات في بيئات البرمجة السحابية والتطبيقات الذكية",
+      "goal": "تمكين 85 طالبة من ممارسة البرمجة السحابية والذكاء الاصطناعي وتطبيق 15 مشروعاً نوعياً",
+      "status": "قيد المراجعة",
+      "progress": 25,
+      "supervisorNotes": "",
+      "evidenceLink": "https://drive.google.com/drive/folders/sample_sec4_computer",
+      "createdAt": "2026-10-24"
+    },
+    {
+      "id": "INIT-102",
+      "title": "استدامة البيئة المدرسية وفرز الموارد الخضراء",
+      "teacherName": "أ. نورة سعد الخالدي",
+      "teacherUsername": "noura_k",
+      "category": "بيئي واستدامة",
+      "target": "كافة طالبات ومنسوبات المدرسة",
+      "beneficiaries": 120,
+      "startDate": "2026-09-15",
+      "endDate": "2026-11-30",
+      "problem": "هدر الموارد الورقية والبلاستيكية بالمرافق المدرسية والحاجة لنشر ثقافة التدوير",
+      "goal": "تدوير 70% من النفايات الورقية والمدرسية وإنشاء نادي أصدقاء البيئة",
+      "status": "قيد التنفيذ",
+      "progress": 60,
+      "supervisorNotes": "مبادرة متميزة وتم توفير حاويات الفرز المخصصة بساحات المدرسة.",
+      "evidenceLink": "https://onedrive.live.com/sample_sec4_environment",
+      "createdAt": "2026-10-20"
+    },
+    {
+      "id": "INIT-103",
+      "title": "بوابة إرشاد الطالبات للتخصصات الواعدة بالجبيل الصناعية",
+      "teacherName": "أ. منى فهد الدوسري",
+      "teacherUsername": "mona_d",
+      "category": "تطوير مهني ومجتمعي",
+      "target": "طالبات الصف الثالث الثانوي",
+      "beneficiaries": 200,
+      "startDate": "2026-09-01",
+      "endDate": "2026-10-22",
+      "problem": "حيرة خريجات الثانوية في اختيار التخصصات الجامعية والمهنية المتوافقة مع رؤية 2030",
+      "goal": "توعية 200 طالبة بالمسارات الهندسية والتقنية وإجراء اختبارات الميول المهنية",
+      "status": "مكتملة",
+      "isFeatured": true,
+      "progress": 100,
+      "supervisorNotes": "مبادرة مكتملة الأركان وحققت أثراً نوعياً ملموساً وتم وسمها بنجمة التميز.",
+      "evidenceLink": "https://canva.com/design/sample_sec4_guidance",
+      "createdAt": "2026-10-15"
+    }
+  ],
+  "resetRequests": [
+    {
+      "id": "REQ-101",
+      "teacherQuery": "sara_h",
+      "specialty": "حاسب آلي",
+      "requestedPassword": "999",
+      "notes": "طلب تجريبي للمعاينة - تعذر الدخول بكلمة السر السابقة",
+      "status": "معلق",
+      "createdAt": "2026-10-25"
+    }
+  ]
+}

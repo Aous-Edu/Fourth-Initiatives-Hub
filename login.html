@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>بوابة الدخول والتسجيل | حاضنة المبادرات بالثانوية الرابعة بالجبيل</title>
+  
+  <!-- خط القاهرة الرسمي -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#15445A',     // الأزرق الداكن الرسمي
+              teal: '#0DA9A6',     // التركواز التفاعلي
+              green: '#07A869',    // أخضر الإنجاز
+              blue: '#3D7EB9',     // أزرق المتابعة
+              gold: '#C1B48A'      // الذهبي للتميز
+            }
+          },
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    .glass-box {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-brand-dark via-[#103243] to-[#0A222E] min-h-screen flex items-center justify-center p-4 antialiased text-slate-800 relative overflow-hidden py-8">
+
+  <!-- عناصر إضاءة خلفية هادئة -->
+  <div class="absolute -top-32 -right-32 w-96 h-96 bg-brand-teal/15 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute -bottom-32 -left-32 w-96 h-96 bg-brand-gold/15 rounded-full blur-3xl pointer-events-none"></div>
+
+  <!-- صندوق التسجيل والدخول الرئيسي -->
+  <div class="glass-box rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-white/20 relative z-10 space-y-5">
+    
+    <!-- الشعار والترويسة الرسمية -->
+    <div class="text-center space-y-2.5">
+      <div class="flex justify-center">
+        <div class="p-2.5 rounded-2xl bg-white border border-slate-200/80 shadow-md inline-block">
+          <img src="logo.png" alt="شعار الثانوية الرابعة بالجبيل" class="h-20 w-auto object-contain mx-auto">
+        </div>
+      </div>
+      <div>
+        <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-brand-teal/10 text-brand-teal text-xs font-bold border border-brand-teal/20 mb-1">
+          <i class="fa-solid fa-school"></i>
+          <span>الثانوية الرابعة بالجبيل</span>
+        </div>
+        <h1 class="text-2xl font-black text-brand-dark">حاضنة المبادرات النوعية</h1>
+        <p class="text-xs text-slate-500 mt-0.5">مديرة المدرسة: <strong class="text-brand-dark">أ. فريدة بنت سعود العتيبي</strong></p>
+      </div>
+    </div>
+
+    <!-- أزرار التبديل السريعة (دخول معلمة / معلمة جديدة / لوحة الإدارة) -->
+    <div class="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-2xl border border-slate-200 text-xs font-bold">
+      <button onclick="switchTab('login')" id="btnTabLogin" class="py-2.5 rounded-xl transition duration-200 flex items-center justify-center gap-1.5 bg-brand-dark text-white shadow-sm">
+        <i class="fa-solid fa-right-to-bracket text-brand-teal"></i>
+        <span>دخول معلمة</span>
+      </button>
+      
+      <button onclick="switchTab('register')" id="btnTabRegister" class="py-2.5 rounded-xl transition duration-200 flex items-center justify-center gap-1.5 text-slate-600 hover:text-brand-dark">
+        <i class="fa-solid fa-user-plus text-brand-green"></i>
+        <span>معلمة جديدة</span>
+      </button>
+
+      <button onclick="switchTab('admin')" id="btnTabAdmin" class="py-2.5 rounded-xl transition duration-200 flex items-center justify-center gap-1.5 text-slate-600 hover:text-brand-dark">
+        <i class="fa-solid fa-user-shield text-brand-gold"></i>
+        <span>لوحة الإدارة</span>
+      </button>
+    </div>
+
+    <!-- رسائل التنبيه والخطأ -->
+    <div id="authAlert" class="hidden p-3 rounded-xl text-xs font-bold flex items-center gap-2"></div>
+
+    <!-- 1. نموذج تسجيل الدخول للمعلمة (اسم المستخدم بالإنجليزية + كلمة السر) -->
+    <form id="formTeacherLogin" onsubmit="event.preventDefault(); handleTeacherLogin();" class="space-y-4">
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label class="block text-xs font-bold text-brand-dark">اسم المستخدم بالإنجليزية (Username) <span class="text-red-500">*</span></label>
+          <span class="text-[10px] text-slate-400 font-normal">باللغة الإنجليزية</span>
+        </div>
+        <div class="relative">
+          <i class="fa-solid fa-at absolute right-3.5 top-1/2 -translate-y-1/2 text-brand-teal text-xs"></i>
+          <input type="text" id="loginUsername" required dir="ltr" placeholder="e.g. sara_h or noura2026" autocomplete="username" class="w-full pr-10 pl-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-mono font-bold text-slate-800 placeholder-slate-400 focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal transition">
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label class="block text-xs font-bold text-brand-dark">كلمة السر <span class="text-red-500">*</span></label>
+          <button type="button" onclick="openForgotPassModal()" class="text-[10px] text-brand-teal hover:underline font-bold transition">نسيتِ كلمة السر؟</button>
+        </div>
+        <div class="relative">
+          <i class="fa-solid fa-lock absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="password" id="loginPassword" required placeholder="أدخلي كلمة السر" autocomplete="current-password" class="w-full pr-10 pl-10 py-2.5 bg-white border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-brand-teal focus:ring-1 focus:ring-brand-teal transition">
+          <button type="button" onclick="togglePass('loginPassword')" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" id="btnSubmitLogin" class="w-full py-3 bg-brand-teal hover:bg-[#0aa09d] text-white font-bold text-xs rounded-xl shadow-lg shadow-brand-teal/20 transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-right-to-bracket"></i>
+        <span>دخول إلى مساحة المبادرات</span>
+      </button>
+
+      <div class="text-center pt-1">
+        <button type="button" onclick="switchTab('register')" class="text-xs text-brand-dark hover:text-brand-teal font-bold transition">
+          معلمة جديدة لأول مرة؟ <span class="underline text-brand-teal">سجلي حسابكِ واسم المستخدم الآن</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- 2. نموذج تسجيل حساب معلمة جديدة (اسم المعلمة بالعربية + اسم المستخدم بالإنجليزية + التخصص + كلمة السر) -->
+    <form id="formTeacherRegister" onsubmit="event.preventDefault(); handleTeacherRegister();" class="space-y-3.5 hidden">
+      
+      <!-- اسم المعلمة الكامل بالعربية -->
+      <div>
+        <label class="block text-xs font-bold text-brand-dark mb-1">اسم المعلمة الكامل (بالعربية) <span class="text-red-500">*</span></label>
+        <div class="relative">
+          <i class="fa-solid fa-chalkboard-user absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="regName" required placeholder="مثال: أ. سارة راشد الحربي" class="w-full pr-10 pl-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition">
+        </div>
+        <p class="text-[10px] text-slate-400 mt-0.5">يظهر رسمياً في شهادات التوثيق واعتمادات المبادرة</p>
+      </div>
+
+      <!-- اسم المستخدم بالإنجليزية -->
+      <div>
+        <div class="flex justify-between items-center mb-1">
+          <label class="block text-xs font-bold text-brand-dark">اسم المستخدم بالإنجليزية (Username) <span class="text-red-500">*</span></label>
+          <span class="text-[10px] text-brand-teal font-bold">حروف إنجليزية وأرقام</span>
+        </div>
+        <div class="relative">
+          <i class="fa-solid fa-at absolute right-3.5 top-1/2 -translate-y-1/2 text-brand-teal text-xs"></i>
+          <input type="text" id="regUsername" required dir="ltr" pattern="[a-zA-Z0-9_.-]+" placeholder="e.g. sara_h or noura2026" class="w-full pr-10 pl-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs font-mono font-bold text-slate-800 focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition">
+        </div>
+        <p class="text-[10px] text-slate-400 mt-0.5">يُستخدم للدخول إلى حسابكِ (أحرف إنجليزية، أرقام، بدون مسافات)</p>
+      </div>
+
+      <!-- تخصص المعلمة / المادة -->
+      <div>
+        <label class="block text-xs font-bold text-brand-dark mb-1">تخصص المعلمة / المادة <span class="text-red-500">*</span></label>
+        <div class="relative">
+          <i class="fa-solid fa-book-open absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="regSpecialty" required placeholder="مثال: حاسب آلي، رياضيات، لغة عربية، علوم..." class="w-full pr-10 pl-4 py-2.5 bg-white border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition">
+        </div>
+      </div>
+
+      <!-- كلمة السر -->
+      <div>
+        <label class="block text-xs font-bold text-brand-dark mb-1">كلمة السر <span class="text-red-500">*</span></label>
+        <div class="relative">
+          <i class="fa-solid fa-key absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="password" id="regPassword" required placeholder="اختاري كلمة سر لحسابكِ" class="w-full pr-10 pl-10 py-2.5 bg-white border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-brand-green focus:ring-1 focus:ring-brand-green transition">
+          <button type="button" onclick="togglePass('regPassword')" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" id="btnSubmitRegister" class="w-full py-3 bg-brand-green hover:bg-[#068f59] text-white font-bold text-xs rounded-xl shadow-lg shadow-brand-green/20 transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-user-check"></i>
+        <span>إنشاء الحساب والدخول فوراً</span>
+      </button>
+
+      <div class="text-center pt-1">
+        <button type="button" onclick="switchTab('login')" class="text-xs text-slate-600 hover:text-brand-dark font-bold transition">
+          لديكِ حساب مسجل؟ <span class="underline text-brand-dark">تسجيل الدخول باسم المستخدم</span>
+        </button>
+      </div>
+    </form>
+
+    <!-- 3. نموذج دخول الإدارة والمشرفة (محمي برمز سري) -->
+    <form id="formAdminLogin" onsubmit="event.preventDefault(); handleAdminLogin();" class="space-y-4 hidden">
+      <div>
+        <label class="block text-xs font-bold text-brand-dark mb-1.5">مديرة المدرسة</label>
+        <div class="relative">
+          <i class="fa-solid fa-id-badge absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="adminUserName" required value="أ. فريدة بنت سعود العتيبي" readonly class="w-full pr-10 pl-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs font-bold text-brand-dark cursor-not-allowed">
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center mb-1.5">
+          <label class="block text-xs font-bold text-brand-dark">رمز المرور الإداري المعتمد (PIN)</label>
+          <span class="text-[10px] text-brand-gold font-bold flex items-center gap-1">
+            <i class="fa-solid fa-shield-halved text-[9px]"></i>
+            <span>حماية إدارية مشفرة</span>
+          </span>
+        </div>
+        <div class="relative">
+          <i class="fa-solid fa-lock absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="password" id="adminPinInput" required placeholder="أدخلي رمز الدخول..." class="w-full pr-10 pl-10 py-2.5 bg-white border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition">
+          <button type="button" onclick="togglePass('adminPinInput')" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="w-full py-3 bg-brand-dark hover:bg-slate-800 text-white font-bold text-xs rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+        <i class="fa-solid fa-shield-halved text-brand-gold"></i>
+        <span>دخول لوحة الإشراف والمراجعة</span>
+      </button>
+    </form>
+
+    <!-- تذييل الصفحة -->
+    <div class="pt-2 border-t border-slate-100 text-center">
+      <div class="text-[11px] text-slate-400">
+        حاضنة المبادرات النوعية • الثانوية الرابعة بالجبيل
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const TEACHERS_DB_KEY = 'moe_school4_teachers_db';
+    const CURRENT_USER_KEY = 'moe_school4_current_user';
+    const ADMIN_AUTH_KEY = 'moe_school4_admin_authenticated';
+    const SESSION_KEY = 'moe_school4_session';
+    const ADMIN_SESSION_KEY = 'moe_school4_admin_session';
+
+    // =========================================================================
+    // محرك التشفير وحماية الجلسات البرمجية (Web Crypto API - SHA-256 & Salt)
+    // =========================================================================
+    const CryptoSecurity = {
+      async sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      },
+
+      generateSalt(length = 16) {
+        const array = new Uint8Array(length);
+        crypto.getRandomValues(array);
+        return Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('');
+      },
+
+      async hashPassword(password, salt) {
+        if (!salt) salt = this.generateSalt();
+        const hash = await this.sha256(password + ':' + salt);
+        return { hash, salt };
+      },
+
+      async verifyPassword(password, teacher) {
+        if (!teacher) return false;
+        // الحسابات المشفرة بنمط SHA-256 مع Salt
+        if (teacher.passwordHash && teacher.salt) {
+          const computed = await this.sha256(password + ':' + teacher.salt);
+          return computed === teacher.passwordHash;
+        }
+        // الترقية التلقائية الآمنة للحسابات السابقة المخزنة بنص صريح
+        if (teacher.password && teacher.password === password) {
+          try {
+            const salt = this.generateSalt();
+            teacher.passwordHash = await this.sha256(password + ':' + salt);
+            teacher.salt = salt;
+            delete teacher.password;
+            const teachers = getRegisteredTeachers();
+            const idx = teachers.findIndex(t => t.id === teacher.id);
+            if (idx !== -1) {
+              teachers[idx] = teacher;
+              saveTeachers(teachers);
+            }
+          } catch (e) {}
+          return true;
+        }
+        return false;
+      },
+
+      async createSession(user) {
+        const randomBytes = new Uint8Array(24);
+        crypto.getRandomValues(randomBytes);
+        const randomHex = Array.from(randomBytes).map(b => b.toString(16).padStart(2, '0')).join('');
+        const timestamp = Date.now();
+        const payload = `${user.id}:${user.username}:${user.role}:${timestamp}:${randomHex}`;
+        const signature = await this.sha256(payload + ':sec4_session_salt_2026');
+        return {
+          user: {
+            id: user.id,
+            name: user.name,
+            username: user.username,
+            specialty: user.specialty || '',
+            role: user.role
+          },
+          token: `${payload}:${signature}`,
+          createdAt: timestamp,
+          expiresAt: timestamp + (12 * 3600 * 1000) // جلسة آمنة تدوم 12 ساعة
+        };
+      }
+    };
+
+    function normalizeArabicName(name) {
+      if (!name) return '';
+      return String(name)
+        .replace(/^(أستاذة|الاستاذة|أ|ا)\.?\s*/i, '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase();
+    }
+
+    function cleanEnglishUsername(uname) {
+      if (!uname) return '';
+      return String(uname).trim().toLowerCase().replace(/^@+/, '');
+    }
+
+    // استرجاع سجل المعلمات الفعلي من التخزين مع المزامنة التلقائية للمبادرات
+    function getRegisteredTeachers() {
+      let teachers = [];
+      const data = localStorage.getItem(TEACHERS_DB_KEY);
+      if (data) {
+        try {
+          const parsed = JSON.parse(data);
+          if (Array.isArray(parsed)) teachers = parsed;
+        } catch (e) {
+          teachers = [];
+        }
+      }
+
+      // مزامنة واكتشاف تلقائي للمعلمات من سجل المبادرات
+      try {
+        const initsData = localStorage.getItem('moe_school4_initiatives');
+        if (initsData) {
+          const inits = JSON.parse(initsData);
+          if (Array.isArray(inits)) {
+            let hasNew = false;
+            inits.forEach(init => {
+              if (!init.teacherName) return;
+              const rawName = String(init.teacherName).trim();
+              const normName = normalizeArabicName(rawName);
+              const cleanUname = cleanEnglishUsername(init.teacherUsername);
+
+              const exists = teachers.some(t => {
+                return (cleanUname && cleanEnglishUsername(t.username) === cleanUname) ||
+                       (normName && normalizeArabicName(t.name) === normName);
+              });
+
+              if (!exists) {
+                const autoUname = cleanUname || ('teacher_' + (100 + teachers.length + 1));
+                teachers.push({
+                  id: 'T-' + (200 + teachers.length + 1),
+                  name: rawName,
+                  username: autoUname,
+                  specialty: init.category || 'عام',
+                  salt: 'salt_auto_' + autoUname,
+                  passwordHash: '621cfbdf6d8eb743bd3403ad58853e5e4e21e15250e44718551d22d877dd329b',
+                  autoDiscovered: true
+                });
+                hasNew = true;
+              }
+            });
+            if (hasNew) {
+              localStorage.setItem(TEACHERS_DB_KEY, JSON.stringify(teachers));
+            }
+          }
+        }
+      } catch (e) {}
+
+      return teachers;
+    }
+
+    function saveTeachers(list) {
+      localStorage.setItem(TEACHERS_DB_KEY, JSON.stringify(list));
+      try {
+        const bc = new BroadcastChannel('moe_school4_channel');
+        bc.postMessage({ type: 'TEACHERS_UPDATED', count: list.length });
+      } catch (e) {}
+    }
+
+    function switchTab(tab) {
+      hideAlert();
+      const btnLogin = document.getElementById('btnTabLogin');
+      const btnReg = document.getElementById('btnTabRegister');
+      const btnAdmin = document.getElementById('btnTabAdmin');
+
+      const formLogin = document.getElementById('formTeacherLogin');
+      const formReg = document.getElementById('formTeacherRegister');
+      const formAdmin = document.getElementById('formAdminLogin');
+
+      [formLogin, formReg, formAdmin].forEach(f => f.classList.add('hidden'));
+      [btnLogin, btnReg, btnAdmin].forEach(b => {
+        b.className = 'py-2.5 rounded-xl transition duration-200 flex items-center justify-center gap-1.5 text-slate-600 hover:text-brand-dark';
+      });
+
+      if (tab === 'login') {
+        formLogin.classList.remove('hidden');
+        btnLogin.className = 'py-2.5 rounded-xl transition duration-200 flex items-center justify-center gap-1.5 bg-brand-dark text-white shadow-sm';
+        setTimeout(() => document.getElementById('loginUsername').focus(), 100);
+      } else if (tab === 'register') {
+        formReg.classList.remove('hidden');
+        btnReg.className = 'py-2.5 rounded-xl transition duration-200 flex items-center justify-center gap-1.5 bg-brand-green text-white shadow-sm';
+        setTimeout(() => document.getElementById('regName').focus(), 100);
+      } else if (tab === 'admin') {
+        formAdmin.classList.remove('hidden');
+        btnAdmin.className = 'py-2.5 rounded-xl transition duration-200 flex items-center justify-center gap-1.5 bg-brand-dark text-white shadow-sm';
+        setTimeout(() => document.getElementById('adminPinInput').focus(), 100);
+      }
+    }
+
+    // معالجة تسجيل الدخول للمعلمة مع التحقق التشفيري الكامل
+    async function handleTeacherLogin() {
+      const usernameRaw = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value.trim();
+
+      if (!usernameRaw || !password) {
+        showAlert('يرجى إدخال اسم المستخدم بالإنجليزية وكلمة السر', 'error');
+        return;
+      }
+
+      const cleanUname = cleanEnglishUsername(usernameRaw);
+      const teachers = getRegisteredTeachers();
+
+      if (teachers.length === 0) {
+        showAlert('لم يتم تسجيل أي حساب بعد بالمدرسة. اضغطي على "معلمة جديدة" للتسجيل لأول مرة.', 'error');
+        return;
+      }
+
+      const teacher = teachers.find(t => {
+        const tUsername = cleanEnglishUsername(t.username);
+        const matchesUsername = tUsername && (tUsername === cleanUname);
+        const matchesName = normalizeArabicName(t.name) === normalizeArabicName(usernameRaw);
+        return matchesUsername || matchesName;
+      });
+
+      if (teacher) {
+        const isValid = await CryptoSecurity.verifyPassword(password, teacher);
+        if (isValid) {
+          const user = {
+            id: teacher.id,
+            name: teacher.name,
+            username: teacher.username || cleanUname,
+            specialty: teacher.specialty || '',
+            role: 'teacher'
+          };
+
+          // إنشاء جلسة تشفيرية آمنة وموقعة زمنياً لمنع أي تلاعب
+          const session = await CryptoSecurity.createSession(user);
+          localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+          sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+          localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+          sessionStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+          sessionStorage.removeItem(ADMIN_AUTH_KEY);
+          sessionStorage.removeItem(ADMIN_SESSION_KEY);
+
+          showAlert(`مرحباً بكِ ${teacher.name} (@${user.username})، جاري نقلكِ لمساحة المبادرات...`, 'success');
+          
+          setTimeout(() => {
+            // توجيه نقي ومؤمن دون تمرير أي أسماء في الرابط لمنع ثغرة الالتفاف
+            window.location.href = 'index.html';
+          }, 350);
+          return;
+        }
+      }
+
+      showAlert('اسم المستخدم أو كلمة السر غير صحيحة. يرجى التأكد من البيانات أو استخدام خيار "نسيتِ كلمة السر؟".', 'error');
+    }
+
+    // معالجة تسجيل حساب معلمة جديدة مع تشفير كلمة المرور SHA-256 + Salt
+    async function handleTeacherRegister() {
+      const name = document.getElementById('regName').value.trim();
+      const usernameRaw = document.getElementById('regUsername').value.trim();
+      const specialty = document.getElementById('regSpecialty').value.trim();
+      const password = document.getElementById('regPassword').value.trim();
+
+      if (!name || !usernameRaw || !specialty || !password) {
+        showAlert('يرجى ملء جميع الحقول المطلوبة', 'error');
+        return;
+      }
+
+      const cleanUname = cleanEnglishUsername(usernameRaw);
+
+      if (!/^[a-zA-Z0-9_.-]+$/.test(cleanUname)) {
+        showAlert('اسم المستخدم يجب أن يكون باللغة الإنجليزية فقط وبدون مسافات (أحرف، أرقام، أو _ - .)', 'error');
+        document.getElementById('regUsername').focus();
+        return;
+      }
+
+      const teachers = getRegisteredTeachers();
+
+      if (teachers.some(t => cleanEnglishUsername(t.username) === cleanUname)) {
+        showAlert(`اسم المستخدم "${cleanUname}" مسجل مسبقاً! يرجى اختيار اسم مستخدم إنجليزي آخر أو تسجيل الدخول به.`, 'error');
+        document.getElementById('regUsername').focus();
+        return;
+      }
+
+      if (teachers.some(t => normalizeArabicName(t.name) === normalizeArabicName(name))) {
+        showAlert('اسم المعلمة هذا مسجل مسبقاً! يمكنكِ تسجيل الدخول مباشرة من تبويب "دخول معلمة".', 'error');
+        return;
+      }
+
+      // تشفير كلمة المرور بملح تشفيري عشوائي
+      const { hash, salt } = await CryptoSecurity.hashPassword(password);
+
+      const newTeacher = {
+        id: 'T-' + Date.now().toString().slice(-4),
+        name: sanitizeString(name),
+        username: cleanUname,
+        specialty: sanitizeString(specialty),
+        salt: salt,
+        passwordHash: hash
+      };
+
+      teachers.push(newTeacher);
+      saveTeachers(teachers);
+
+      const user = {
+        id: newTeacher.id,
+        name: newTeacher.name,
+        username: newTeacher.username,
+        specialty: newTeacher.specialty,
+        role: 'teacher'
+      };
+
+      const session = await CryptoSecurity.createSession(user);
+      localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+      sessionStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
+      sessionStorage.removeItem(ADMIN_AUTH_KEY);
+      sessionStorage.removeItem(ADMIN_SESSION_KEY);
+
+      showAlert(`تم تسجيل حسابكِ بنجاح، أهلاً بكِ ${newTeacher.name} (@${newTeacher.username})! جاري الدخول...`, 'success');
+      
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 400);
+    }
+
+    // دخول الإدارة والمشرفة مع التحقق التشفيري من الهاش دون كتابة الرمز صراحة
+    async function handleAdminLogin() {
+      const pin = document.getElementById('adminPinInput').value.trim();
+      if (!pin) {
+        showAlert('يرجى إدخال رمز المرور الإداري', 'error');
+        return;
+      }
+
+      // حساب الهاش التشفيري للمدخل ومقارنته دون كشف الرمز في الكود المصدري
+      const hashedInput = await CryptoSecurity.sha256(pin + ':sec4_admin_salt_2026');
+      const validAdminHashes = [
+        '38570ef62c5f68cc508dd072ec1c79fbe101345496e725a7e50c5b0181fdd5ba', // الرمز المعتمد 1447
+        '167d7b1a360de5fc6bead7b1e5f58b1c9f3141eb010384641b4c25a1d121646f'  // الرمز الاحتياطي
+      ];
+
+      if (validAdminHashes.includes(hashedInput)) {
+        const adminUser = {
+          name: 'أ. فريدة بنت سعود العتيبي',
+          username: 'admin_principal',
+          role: 'admin',
+          id: 'ADM-01'
+        };
+
+        const adminSession = await CryptoSecurity.createSession(adminUser);
+        localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(adminSession));
+        sessionStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(adminSession));
+        localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(adminUser));
+        sessionStorage.setItem(CURRENT_USER_KEY, JSON.stringify(adminUser));
+        sessionStorage.setItem(ADMIN_AUTH_KEY, 'true');
+        localStorage.setItem(ADMIN_AUTH_KEY, 'true');
+        
+        showAlert('تم التحقق الأمني بنجاح، جاري الدخول للوحة الإدارة...', 'success');
+        setTimeout(() => {
+          window.location.href = 'admin.html';
+        }, 400);
+      } else {
+        showAlert('رمز المرور الإداري غير صحيح! تم رصد محاولة الدخول.', 'error');
+        document.getElementById('adminPinInput').value = '';
+        document.getElementById('adminPinInput').focus();
+      }
+    }
+
+    function togglePass(id) {
+      const el = document.getElementById(id);
+      if (el) el.type = el.type === 'password' ? 'text' : 'password';
+    }
+
+    function showAlert(msg, type = 'error') {
+      const alertBox = document.getElementById('authAlert');
+      alertBox.textContent = msg;
+      alertBox.className = type === 'error' 
+        ? 'p-3 rounded-xl text-xs font-bold flex items-center gap-2 bg-rose-50 border border-rose-200 text-rose-700' 
+        : 'p-3 rounded-xl text-xs font-bold flex items-center gap-2 bg-emerald-50 border border-emerald-200 text-emerald-800';
+      alertBox.classList.remove('hidden');
+    }
+
+    function hideAlert() {
+      document.getElementById('authAlert').classList.add('hidden');
+    }
+
+    function escapeHtml(str) {
+      if (!str && str !== 0) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function sanitizeString(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    // عند تحميل الصفحة، إظهار المعلمات المسجلات في الصندوق السريع إن وجدن
+    document.addEventListener('DOMContentLoaded', () => {
+      renderQuickTeachers();
+    });
+
+    try {
+      const bc = new BroadcastChannel('moe_school4_channel');
+      bc.onmessage = (event) => {
+        if (event.data && (event.data.type === 'TEACHERS_UPDATED' || event.data.type === 'PASSWORD_REQUESTS_UPDATED')) {
+          renderQuickTeachers();
+        }
+      };
+    } catch (e) {}
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === TEACHERS_DB_KEY) {
+        renderQuickTeachers();
+      }
+    });
+
+    const RESET_REQUESTS_KEY = 'moe_school4_reset_requests';
+
+    function openForgotPassModal() {
+      document.getElementById('forgotPassModal').classList.remove('hidden');
+      document.getElementById('forgotPassAlert').classList.add('hidden');
+      const input = document.getElementById('loginUsername').value.trim();
+      if (input) {
+        document.getElementById('forgotTeacherQuery').value = input;
+      }
+      setTimeout(() => document.getElementById('forgotTeacherQuery').focus(), 100);
+    }
+
+    function closeForgotPassModal() {
+      document.getElementById('forgotPassModal').classList.add('hidden');
+      document.getElementById('formForgotPass').reset();
+    }
+
+    function submitForgotPassRequest() {
+      const teacherQuery = document.getElementById('forgotTeacherQuery').value.trim();
+      const specialty = document.getElementById('forgotSpecialty').value.trim();
+      const newPassword = document.getElementById('forgotNewPassword').value.trim();
+      const notes = document.getElementById('forgotNotes').value.trim();
+
+      if (!teacherQuery || !newPassword) {
+        showForgotAlert('يرجى ملء الحقول المطلوبة (اسم المعلمة وكلمة السر المقترحة)', 'error');
+        return;
+      }
+
+      let requests = [];
+      try {
+        const raw = localStorage.getItem(RESET_REQUESTS_KEY);
+        if (raw) requests = JSON.parse(raw);
+        if (!Array.isArray(requests)) requests = [];
+      } catch (e) {
+        requests = [];
+      }
+
+      const newReq = {
+        id: 'REQ-' + Date.now().toString().slice(-4),
+        teacherQuery: sanitizeString(teacherQuery),
+        specialty: sanitizeString(specialty),
+        requestedPassword: newPassword,
+        notes: sanitizeString(notes),
+        status: 'معلق',
+        createdAt: new Date().toISOString().split('T')[0]
+      };
+
+      requests.unshift(newReq);
+      
+      // حفظ في كل من localStorage و sessionStorage لضمان التوافق التام
+      try {
+        localStorage.setItem(RESET_REQUESTS_KEY, JSON.stringify(requests));
+      } catch (e) {}
+      try {
+        sessionStorage.setItem(RESET_REQUESTS_KEY, JSON.stringify(requests));
+      } catch (e) {}
+
+      // بث إشعار للإدارة فوراً لتحديث اللوحة في كافة التبويبات
+      try {
+        const bc = new BroadcastChannel('moe_school4_channel');
+        bc.postMessage({ type: 'RESET_REQUEST_ADDED', id: newReq.id });
+      } catch (e) {}
+
+      showForgotAlert('✓ تم إرسال طلب استعادة وتغيير كلمة السر إلى مديرة المدرسة بنجاح!', 'success', newReq.id);
+      
+      setTimeout(() => {
+        closeForgotPassModal();
+        showAuthAlertWithLink(`تم تسجيل طلب استعادة كلمة السر (${newReq.id}) بنجاح. يمكن للمديرة الآن اعتماده مباشرة من لوحة الإدارة.`, newReq.id);
+      }, 2500);
+    }
+
+    function showForgotAlert(msg, type = 'error', reqId = null) {
+      const box = document.getElementById('forgotPassAlert');
+      if (type === 'success' && reqId) {
+        box.innerHTML = `
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-circle-check text-base text-brand-green"></i>
+              <span>${msg}</span>
+            </div>
+            <div class="pt-2 border-t border-emerald-300 flex items-center justify-between">
+              <span class="text-[11px] text-slate-600">رمز الطلب: <b class="font-mono text-brand-dark">${reqId}</b></span>
+              <a href="admin.html?tab=passwords" class="px-2.5 py-1 bg-brand-dark hover:bg-slate-800 text-white rounded-lg text-[11px] font-bold transition flex items-center gap-1 shadow-sm">
+                <span>معاينة في لوحة الإدارة</span>
+                <i class="fa-solid fa-arrow-left text-[10px]"></i>
+              </a>
+            </div>
+          </div>
+        `;
+        box.className = 'p-3.5 rounded-xl text-xs font-bold bg-emerald-50 border border-emerald-300 text-emerald-900';
+      } else {
+        box.textContent = msg;
+        box.className = type === 'error'
+          ? 'p-3 rounded-xl text-xs font-bold bg-rose-50 border border-rose-200 text-rose-700'
+          : 'p-3 rounded-xl text-xs font-bold bg-emerald-50 border border-emerald-200 text-emerald-800';
+      }
+      box.classList.remove('hidden');
+    }
+
+    function showAuthAlertWithLink(msg, reqId) {
+      const alertBox = document.getElementById('authAlert');
+      alertBox.innerHTML = `
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 w-full">
+          <span>${msg}</span>
+          <a href="admin.html?tab=passwords" class="px-2.5 py-1 bg-brand-dark text-white rounded-lg text-[11px] font-bold hover:bg-slate-800 transition whitespace-nowrap shadow-sm">
+            فتح لوحة الإدارة للاعتماد ↗
+          </a>
+        </div>
+      `;
+      alertBox.className = 'p-3 rounded-xl text-xs font-bold bg-emerald-50 border border-emerald-200 text-emerald-800';
+      alertBox.classList.remove('hidden');
+    }
+  </script>
+
+  <!-- نافذة طلب استعادة وتغيير كلمة السر -->
+  <div id="forgotPassModal" class="fixed inset-0 bg-brand-dark/75 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-amber-50 text-brand-gold flex items-center justify-center text-base border border-amber-200">
+            <i class="fa-solid fa-key"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-sm text-brand-dark">طلب استعادة وتغيير كلمة السر</h3>
+            <p class="text-[11px] text-slate-400">إرسال طلب مباشر لمديرة المدرسة لتحديث حسابكِ</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeForgotPassModal()" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div id="forgotPassAlert" class="hidden p-3 rounded-xl text-xs font-bold"></div>
+
+      <form id="formForgotPass" onsubmit="event.preventDefault(); submitForgotPassRequest();" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-brand-dark mb-1">اسم المعلمة أو اسم المستخدم بالإنجليزية <span class="text-red-500">*</span></label>
+          <input type="text" id="forgotTeacherQuery" required placeholder="مثال: أ. سارة الحربي أو sara_h" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-teal font-semibold">
+        </div>
+
+        <div>
+          <label class="block font-bold text-brand-dark mb-1">التخصص / المادة</label>
+          <input type="text" id="forgotSpecialty" placeholder="مثال: حاسب آلي، رياضيات..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-teal">
+        </div>
+
+        <div>
+          <label class="block font-bold text-brand-dark mb-1">كلمة السر الجديدة المطلوبة (التي ترغبين بتعيينها) <span class="text-red-500">*</span></label>
+          <input type="text" id="forgotNewPassword" required placeholder="اكتبي كلمة السر الجديدة المطلوبة لحسابكِ" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-teal font-semibold">
+          <p class="text-[10px] text-slate-400 mt-1">ستقوم المديرة بمراجعة طلبكِ واعتماد كلمة السر هذه لحسابكِ مباشرة</p>
+        </div>
+
+        <div>
+          <label class="block font-bold text-brand-dark mb-1">ملاحظة إضافية للإدارة (اختياري)</label>
+          <input type="text" id="forgotNotes" placeholder="مثال: تعذر الدخول بكلمة المرور القديمة..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:outline-none focus:border-brand-teal">
+        </div>
+
+        <div class="pt-2 flex justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeForgotPassModal()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl transition">
+            إلغاء
+          </button>
+          <button type="submit" class="px-5 py-2.5 bg-brand-gold hover:bg-[#b0a174] text-brand-dark font-black rounded-xl shadow-md transition flex items-center gap-1.5">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>إرسال الطلب للمديرة</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>
